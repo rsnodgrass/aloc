@@ -53,5 +53,9 @@ func RenderDevelopmentCost(effort *model.EffortEstimates, theme *renderer.Theme)
 		}
 	}
 
+	// Disclaimer
+	b.WriteString("\n")
+	b.WriteString(theme.Dim.Render("* Rough estimates only, +/- depending on the effectiveness and experience of engineers") + "\n")
+
 	return b.String()
 }
