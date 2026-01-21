@@ -3,8 +3,8 @@ package aggregator
 import (
 	"fmt"
 
-	"github.com/rgehrsern/aloc/internal/effort"
-	"github.com/rgehrsern/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/effort"
+	"github.com/modern-tooling/aloc/internal/model"
 )
 
 // EffortOptions controls effort estimation

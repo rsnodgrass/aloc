@@ -1,6 +1,6 @@
 package aggregator
 
-import "github.com/rgehrsern/aloc/internal/model"
+import "github.com/modern-tooling/aloc/internal/model"
 
 func ComputeSummary(records []*model.FileRecord) model.Summary {
 	langs := make(map[string]bool)

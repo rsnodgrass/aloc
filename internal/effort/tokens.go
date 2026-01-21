@@ -1,6 +1,6 @@
 package effort
 
-import "github.com/rgehrsern/aloc/internal/model"
+import "github.com/modern-tooling/aloc/internal/model"
 
 // TokenEstimate contains estimated token counts for AI processing
 type TokenEstimate struct {

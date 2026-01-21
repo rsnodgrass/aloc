@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/rgehrsern/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/model"
 )
 
 type Overrides struct {

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"io"
 
-	"github.com/rgehrsern/aloc/internal/model"
-	"github.com/rgehrsern/aloc/internal/renderer"
+	"github.com/modern-tooling/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/renderer"
 )
 
 type JSONRenderer struct {

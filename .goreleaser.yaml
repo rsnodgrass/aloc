@@ -60,11 +60,11 @@ changelog:
 
 brews:
   - repository:
-      owner: rgehrsern
+      owner: modern-tooling
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
     directory: Formula
-    homepage: https://github.com/rgehrsern/aloc
+    homepage: https://github.com/modern-tooling/aloc
     description: Semantic LOC counter - understand your codebase by role
     license: MIT
     skip_upload: auto

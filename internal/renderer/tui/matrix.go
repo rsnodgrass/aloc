@@ -5,8 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rgehrsern/aloc/internal/model"
-	"github.com/rgehrsern/aloc/internal/renderer"
+	"github.com/modern-tooling/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/renderer"
 )
 
 // RenderLanguageMatrix renders a heatmap of language × responsibility density

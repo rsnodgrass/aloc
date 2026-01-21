@@ -3,8 +3,8 @@ package tui
 import (
 	"fmt"
 
-	"github.com/rgehrsern/aloc/internal/model"
-	"github.com/rgehrsern/aloc/internal/renderer"
+	"github.com/modern-tooling/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/renderer"
 )
 
 // RenderConfidenceLine renders classification confidence as a single line

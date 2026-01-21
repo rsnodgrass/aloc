@@ -3,7 +3,7 @@ package inference
 import (
 	"testing"
 
-	"github.com/rgehrsern/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/model"
 )
 
 func TestRoleScoreAdd(t *testing.T) {

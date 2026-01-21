@@ -4,7 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/rgehrsern/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/model"
 	"gopkg.in/yaml.v3"
 )
 

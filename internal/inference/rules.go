@@ -1,6 +1,6 @@
 package inference
 
-import "github.com/rgehrsern/aloc/internal/model"
+import "github.com/modern-tooling/aloc/internal/model"
 
 // PathRule defines a path-based heuristic for role classification
 type PathRule struct {

@@ -1,4 +1,4 @@
-module github.com/rgehrsern/aloc
+module github.com/modern-tooling/aloc
 
 go 1.25.6
 

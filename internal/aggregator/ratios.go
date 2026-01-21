@@ -1,6 +1,6 @@
 package aggregator
 
-import "github.com/rgehrsern/aloc/internal/model"
+import "github.com/modern-tooling/aloc/internal/model"
 
 func ComputeRatios(responsibilities []model.Responsibility) model.Ratios {
 	byRole := make(map[model.Role]int)

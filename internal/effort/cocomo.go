@@ -3,7 +3,7 @@ package effort
 import (
 	"math"
 
-	"github.com/rgehrsern/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/model"
 )
 
 // COCOMOOptions contains parameters for COCOMO estimation

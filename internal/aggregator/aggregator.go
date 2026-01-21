@@ -3,7 +3,7 @@ package aggregator
 import (
 	"time"
 
-	"github.com/rgehrsern/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/model"
 )
 
 const Version = "0.1.0"

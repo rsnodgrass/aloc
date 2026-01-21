@@ -5,8 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rgehrsern/aloc/internal/model"
-	"github.com/rgehrsern/aloc/internal/renderer"
+	"github.com/modern-tooling/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/renderer"
 )
 
 // tableCell represents a single cell with its plain text and optional styling

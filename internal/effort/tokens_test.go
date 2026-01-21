@@ -3,7 +3,7 @@ package effort
 import (
 	"testing"
 
-	"github.com/rgehrsern/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/model"
 )
 
 func TestEstimateTokens(t *testing.T) {

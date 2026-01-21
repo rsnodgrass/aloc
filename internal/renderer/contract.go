@@ -4,7 +4,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/rgehrsern/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/model"
 )
 
 type Renderer interface {

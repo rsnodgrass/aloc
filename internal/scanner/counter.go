@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rgehrsern/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/model"
 )
 
 // bufferPool reuses 256KB buffers - the documented sweet spot for SSD I/O

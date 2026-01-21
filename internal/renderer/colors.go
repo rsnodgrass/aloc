@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/rgehrsern/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/model"
 )
 
 // AdaptiveColor provides light/dark mode aware colors

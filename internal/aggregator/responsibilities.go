@@ -3,7 +3,7 @@ package aggregator
 import (
 	"sort"
 
-	"github.com/rgehrsern/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/model"
 )
 
 type roleAccum struct {

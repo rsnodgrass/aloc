@@ -3,7 +3,7 @@ package inference
 import (
 	"sort"
 
-	"github.com/rgehrsern/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/model"
 )
 
 type RoleScore struct {

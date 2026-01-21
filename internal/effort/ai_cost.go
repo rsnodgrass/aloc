@@ -3,7 +3,7 @@ package effort
 import (
 	"fmt"
 
-	"github.com/rgehrsern/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/model"
 )
 
 // AICostEstimate contains calculated AI costs

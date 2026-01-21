@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rgehrsern/aloc/internal/model"
-	"github.com/rgehrsern/aloc/internal/renderer"
+	"github.com/modern-tooling/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/renderer"
 )
 
 // RenderEffortModels renders the human and AI effort estimates section (scc-style)

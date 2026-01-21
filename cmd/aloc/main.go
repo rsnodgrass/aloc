@@ -7,14 +7,14 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/rgehrsern/aloc/internal/aggregator"
-	"github.com/rgehrsern/aloc/internal/inference"
-	"github.com/rgehrsern/aloc/internal/model"
-	"github.com/rgehrsern/aloc/internal/renderer"
-	jsonrenderer "github.com/rgehrsern/aloc/internal/renderer/json"
-	"github.com/rgehrsern/aloc/internal/renderer/tui"
-	"github.com/rgehrsern/aloc/internal/scanner"
-	"github.com/rgehrsern/aloc/pkg/config"
+	"github.com/modern-tooling/aloc/internal/aggregator"
+	"github.com/modern-tooling/aloc/internal/inference"
+	"github.com/modern-tooling/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/renderer"
+	jsonrenderer "github.com/modern-tooling/aloc/internal/renderer/json"
+	"github.com/modern-tooling/aloc/internal/renderer/tui"
+	"github.com/modern-tooling/aloc/internal/scanner"
+	"github.com/modern-tooling/aloc/pkg/config"
 	"github.com/spf13/cobra"
 )
 

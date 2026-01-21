@@ -3,8 +3,8 @@ package aggregator
 import (
 	"sort"
 
-	"github.com/rgehrsern/aloc/internal/model"
-	"github.com/rgehrsern/aloc/internal/scanner"
+	"github.com/modern-tooling/aloc/internal/model"
+	"github.com/modern-tooling/aloc/internal/scanner"
 )
 
 type langAccum struct {
