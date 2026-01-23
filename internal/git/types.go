@@ -10,17 +10,19 @@ import (
 type Bucket struct {
 	Start time.Time
 	End   time.Time
-	Churn int // lines added + lines deleted
+	Churn int  // lines added + lines deleted
+	HasAI bool // at least one AI-assisted commit in this bucket
 }
 
 // ChangeEvent represents a single file change from git history
 type ChangeEvent struct {
-	When    time.Time
-	Path    string
-	Added   int
-	Deleted int
-	Role    model.Role // mapped from file classification
-	Author  string     // hashed for privacy, used only for ownership calc
+	When       time.Time
+	Path       string
+	Added      int
+	Deleted    int
+	Role       model.Role // mapped from file classification
+	Author     string     // hashed for privacy, used only for ownership calc
+	AIAssisted bool       // commit had explicit AI assistance marker
 }
 
 // Sparkline is the rendered output for a responsibility
@@ -55,6 +57,10 @@ type GitMetrics struct {
 
 	// Sparkline data (normalized 0-1 per weekly bucket)
 	ChurnSeries map[model.Role]*Sparkline
+
+	// AI assistance timeline (binary per bucket, shared across roles)
+	AITimeline []bool // true if bucket had any AI-assisted commit
+	HasAnyAI   bool   // true if any commit in window was AI-assisted
 
 	// Effort adjustments
 	Adjustments   []EffortAdjustment

@@ -23,10 +23,12 @@ func ParseHistory(opts ParseOptions) ([]ChangeEvent, error) {
 	since := time.Now().AddDate(0, -opts.SinceMonths, 0).Format("2006-01-02")
 
 	// single efficient git command
+	// format: hash|email|timestamp followed by commit body (for AI marker detection)
+	// %x00 separates header from body, %x01 marks end of body
 	cmd := exec.Command("git", "-C", opts.Root,
 		"log",
 		"--numstat",
-		"--format=%H|%ae|%aI",
+		"--format=%H|%ae|%aI%x00%b%x01",
 		"--since="+since,
 	)
 
@@ -43,6 +45,7 @@ func parseGitLog(output string) []ChangeEvent {
 	var events []ChangeEvent
 	var currentAuthor string
 	var currentTime time.Time
+	var currentAIAssisted bool
 
 	scanner := bufio.NewScanner(strings.NewReader(output))
 	for scanner.Scan() {
@@ -51,15 +54,31 @@ func parseGitLog(output string) []ChangeEvent {
 			continue
 		}
 
-		// commit header line: hash|email|timestamp
+		// commit header line: hash|email|timestamp followed by \x00 body \x01
+		// the body may span multiple lines between \x00 and \x01
 		if strings.Contains(line, "|") && strings.Count(line, "|") == 2 {
-			parts := strings.Split(line, "|")
+			// extract header and potential body start
+			header, bodyPart, _ := strings.Cut(line, "\x00")
+
+			parts := strings.Split(header, "|")
 			if len(parts) == 3 {
 				currentAuthor = hashAuthor(parts[1])
 				t, err := time.Parse(time.RFC3339, parts[2])
 				if err == nil {
 					currentTime = t
 				}
+
+				// collect full commit body (may span multiple lines)
+				var body strings.Builder
+				body.WriteString(bodyPart)
+
+				// body ends at \x01 marker
+				for !strings.Contains(body.String(), "\x01") && scanner.Scan() {
+					body.WriteString("\n")
+					body.WriteString(scanner.Text())
+				}
+
+				currentAIAssisted = detectAIMarker(body.String())
 			}
 			continue
 		}
@@ -79,16 +98,42 @@ func parseGitLog(output string) []ChangeEvent {
 			}
 
 			events = append(events, ChangeEvent{
-				When:    currentTime,
-				Path:    fields[2],
-				Added:   added,
-				Deleted: deleted,
-				Author:  currentAuthor,
+				When:       currentTime,
+				Path:       fields[2],
+				Added:      added,
+				Deleted:    deleted,
+				Author:     currentAuthor,
+				AIAssisted: currentAIAssisted,
 			})
 		}
 	}
 
 	return events
+}
+
+// detectAIMarker checks if commit message contains explicit AI assistance markers
+// Only detects explicit markers, never infers from style or timing
+func detectAIMarker(body string) bool {
+	lower := strings.ToLower(body)
+
+	// supported markers (case-insensitive)
+	// only includes tools verified to add commit markers
+	markers := []string{
+		// claude code: "Co-Authored-By: Claude <noreply@anthropic.com>"
+		"co-authored-by: claude",
+		// aider: "Co-authored-by: aider (model) <noreply@aider.chat>"
+		"co-authored-by: aider",
+		// generic markers teams may add manually
+		"ai-assisted:",
+		"ai-assisted-by:",
+	}
+
+	for _, marker := range markers {
+		if strings.Contains(lower, marker) {
+			return true
+		}
+	}
+	return false
 }
 
 // hashAuthor creates a privacy-preserving hash of an email

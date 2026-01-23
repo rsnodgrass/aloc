@@ -68,6 +68,10 @@ func Analyze(root string, records []*model.FileRecord, opts Options) (*GitMetric
 	// build sparklines
 	churnSeries := BuildChurnSeries(events, now, opts.SparklineMonths, opts.Smooth)
 
+	// build AI timeline (shared across all roles)
+	aiTimeline := buildAITimeline(events, now, opts.SparklineMonths, opts.Smooth)
+	hasAnyAI := HasAnyAIAssisted(events)
+
 	// calculate effort adjustments
 	adjustments, net := CalculateEffortAdjustments(
 		churnStat, stableCore, volatileSurface, rewritePressure, ownershipConc,
@@ -93,6 +97,8 @@ func Analyze(root string, records []*model.FileRecord, opts Options) (*GitMetric
 		OwnershipConcentration: ownershipConc,
 		ParallelismSignal:      parallelism,
 		ChurnSeries:            churnSeries,
+		AITimeline:             aiTimeline,
+		HasAnyAI:               hasAnyAI,
 		Adjustments:            adjustments,
 		NetAdjustment:          net,
 		WindowMonths:           opts.SparklineMonths,
@@ -100,6 +106,19 @@ func Analyze(root string, records []*model.FileRecord, opts Options) (*GitMetric
 		CommitCount:            len(events),
 		AnalysisNote:           note,
 	}, nil
+}
+
+// buildAITimeline creates the AI marker timeline aligned with sparkline buckets
+func buildAITimeline(events []ChangeEvent, now time.Time, months int, smooth bool) []bool {
+	var buckets []Bucket
+	if smooth {
+		buckets = BuildBiweeklyBuckets(now, months)
+	} else {
+		buckets = BuildWeeklyBuckets(now, months)
+	}
+
+	AssignAIMarkers(buckets, events)
+	return BuildAITimeline(buckets)
 }
 
 // generateAnalysisNote creates a single interpretive sentence

@@ -107,6 +107,17 @@ func renderSparklines(gitMetrics *model.GitMetrics, theme *renderer.Theme, termW
 			)
 		}
 	}
+
+	// render AI marker line (shared timeline, one line for all roles)
+	if len(gitMetrics.AITimeline) > 0 {
+		aiMarkers := renderAIMarkerLine(gitMetrics.AITimeline, targetWidth)
+		paddedLabel := fmt.Sprintf("%-*s", labelWidth, "ai")
+		fmt.Fprintf(&sb, "%s%s%s\n",
+			theme.Dim.Render(paddedLabel),
+			strings.Repeat(" ", gapWidth),
+			theme.Dim.Render(aiMarkers),
+		)
+	}
 	sb.WriteString("\n")
 
 	return sb.String()
@@ -154,7 +165,7 @@ func renderSignals(gitMetrics *model.GitMetrics, theme *renderer.Theme) string {
 		churnConcentrationHint(gitMetrics.ChurnConcentration))
 	renderSignal(&sb, theme, "Rewrite pressure",
 		fmt.Sprintf("%.0f%% replace/delete heavy", gitMetrics.RewritePressure*100),
-		rewritePressureHint(gitMetrics.RewritePressure))
+		rewritePressureHint(gitMetrics.RewritePressure, gitMetrics.HasAnyAI))
 	sb.WriteString("\n")
 
 	// Stability
@@ -205,14 +216,27 @@ func churnConcentrationHint(stat model.GitChurnStat) signalHint {
 	return signalHint{"distributed", effortNeutral}
 }
 
-func rewritePressureHint(v float64) signalHint {
+func rewritePressureHint(v float64, hasAnyAI bool) signalHint {
+	var text string
+	var dir effortDirection
+
 	if v > 0.40 {
-		return signalHint{"heavy rework", effortIncrease}
+		text = "heavy rework"
+		dir = effortIncrease
+	} else if v > 0.25 {
+		text = "rework"
+		dir = effortIncrease
+	} else {
+		text = "incremental"
+		dir = effortNeutral
 	}
-	if v > 0.25 {
-		return signalHint{"rework", effortIncrease}
+
+	// append AI-assisted tag when AI commits detected
+	if hasAnyAI {
+		text += ", AI-assisted"
 	}
-	return signalHint{"incremental", effortNeutral}
+
+	return signalHint{text, dir}
 }
 
 func stableCoreHint(v float64) signalHint {
@@ -265,4 +289,57 @@ func padOrTruncSparkline(glyphs string, targetWidth int) string {
 	// pad with baseline glyph on left (older time)
 	padding := strings.Repeat("▁", targetWidth-len(runes))
 	return padding + glyphs
+}
+
+// renderAIMarkerLine creates a subtle marker line showing AI-assisted periods
+// Uses "·" for buckets with AI-assisted commits, space otherwise
+func renderAIMarkerLine(timeline []bool, targetWidth int) string {
+	// downsample timeline to match sparkline width if needed
+	downsampled := downsampleAITimeline(timeline, targetWidth)
+
+	var sb strings.Builder
+	for _, hasAI := range downsampled {
+		if hasAI {
+			sb.WriteRune('·')
+		} else {
+			sb.WriteRune(' ')
+		}
+	}
+
+	// pad if needed (for shorter timelines)
+	result := sb.String()
+	if len(result) < targetWidth {
+		padding := strings.Repeat(" ", targetWidth-len(result))
+		return padding + result
+	}
+	return result
+}
+
+// downsampleAITimeline reduces timeline to target width using OR pooling
+// (any AI in bucket → marker shown)
+func downsampleAITimeline(timeline []bool, target int) []bool {
+	if len(timeline) <= target {
+		return timeline
+	}
+
+	factor := float64(len(timeline)) / float64(target)
+	result := make([]bool, target)
+
+	for i := range target {
+		start := int(float64(i) * factor)
+		end := int(float64(i+1) * factor)
+		if end > len(timeline) {
+			end = len(timeline)
+		}
+
+		// OR pooling: any AI in range → true
+		for j := start; j < end; j++ {
+			if timeline[j] {
+				result[i] = true
+				break
+			}
+		}
+	}
+
+	return result
 }

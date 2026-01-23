@@ -89,6 +89,8 @@ func convertGitMetrics(g *git.GitMetrics) *model.GitMetrics {
 		RewritePressure:        g.RewritePressure,
 		OwnershipConcentration: g.OwnershipConcentration,
 		ParallelismSignal:      g.ParallelismSignal,
+		AITimeline:             g.AITimeline,
+		HasAnyAI:               g.HasAnyAI,
 		NetAdjustment:          g.NetAdjustment,
 		WindowMonths:           g.WindowMonths,
 		BucketCount:            g.BucketCount,

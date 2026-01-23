@@ -135,3 +135,39 @@ func NormalizeBuckets(buckets []Bucket) []float64 {
 
 	return normalized
 }
+
+// AssignAIMarkers marks buckets that contain AI-assisted commits
+// This is a binary signal per bucket (not a count or percentage)
+func AssignAIMarkers(buckets []Bucket, events []ChangeEvent) {
+	for _, ev := range events {
+		if !ev.AIAssisted {
+			continue
+		}
+
+		for i := range buckets {
+			if ev.When.After(buckets[i].Start) && !ev.When.After(buckets[i].End) {
+				buckets[i].HasAI = true
+				break
+			}
+		}
+	}
+}
+
+// BuildAITimeline extracts the HasAI signal from buckets
+func BuildAITimeline(buckets []Bucket) []bool {
+	timeline := make([]bool, len(buckets))
+	for i, b := range buckets {
+		timeline[i] = b.HasAI
+	}
+	return timeline
+}
+
+// HasAnyAIAssisted checks if any events are AI-assisted
+func HasAnyAIAssisted(events []ChangeEvent) bool {
+	for _, ev := range events {
+		if ev.AIAssisted {
+			return true
+		}
+	}
+	return false
+}

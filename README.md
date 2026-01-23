@@ -52,6 +52,8 @@ aloc . --deep                 # Deep analysis (header probing)
 |------|-------------|
 | `--format`, `-f` | Output format: `tui` (default), `json` |
 | `--effort` | Include effort estimates |
+| `--git` | Enable git history analysis (churn sparklines, stability metrics) |
+| `--git-months` | Months of history for git analysis (default: 6) |
 | `--deep` | Enable header probing and extensionless file analysis |
 | `--files` | Include file-level details |
 | `--pretty` | Pretty-print JSON output |
@@ -60,6 +62,8 @@ aloc . --deep                 # Deep analysis (header probing)
 | `--config`, `-c` | Config file path |
 | `--no-color` | Disable colors |
 | `--no-embedded` | Hide embedded code blocks in Markdown |
+
+AI-assisted commits are shown as timeline markers to contextualize periods of iteration and rework.
 
 ## Configuration
 

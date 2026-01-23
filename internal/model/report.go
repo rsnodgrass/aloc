@@ -26,6 +26,8 @@ type GitMetrics struct {
 	OwnershipConcentration float64                 `json:"ownership_concentration"`
 	ParallelismSignal      string                  `json:"parallelism_signal"`
 	ChurnSeries            map[Role]GitSparkline   `json:"churn_series,omitempty"`
+	AITimeline             []bool                  `json:"ai_timeline,omitempty"`  // AI-assisted commit markers per bucket
+	HasAnyAI               bool                    `json:"has_any_ai,omitempty"`   // true if any AI-assisted commit in window
 	Adjustments            []GitEffortAdjustment   `json:"adjustments,omitempty"`
 	NetAdjustment          float64                 `json:"net_adjustment"`
 	WindowMonths           int                     `json:"window_months"`
