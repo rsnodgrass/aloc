@@ -80,14 +80,15 @@ func renderSparklines(gitMetrics *model.GitMetrics, theme *renderer.Theme, termW
 	// render sparklines for each role (in consistent order)
 	roles := []model.Role{model.RoleCore, model.RoleTest, model.RoleInfra}
 	roleLabels := map[model.Role]string{
-		model.RoleCore:  "prod",
+		model.RoleCore:  "core",
 		model.RoleTest:  "test",
 		model.RoleInfra: "infra",
 	}
 
 	for _, role := range roles {
 		if sparkline, ok := gitMetrics.ChurnSeries[role]; ok {
-			label := roleLabels[role]
+			// pad label BEFORE styling (ANSI codes break width calculation)
+			paddedLabel := fmt.Sprintf("%-*s", labelWidth, roleLabels[role])
 
 			// render adaptive sparkline from raw values
 			var glyphs string
@@ -99,9 +100,8 @@ func renderSparklines(gitMetrics *model.GitMetrics, theme *renderer.Theme, termW
 			}
 
 			// color the sparkline by role
-			fmt.Fprintf(&sb, "%-*s%s%s\n",
-				labelWidth,
-				theme.ForRole(role).Render(label),
+			fmt.Fprintf(&sb, "%s%s%s\n",
+				theme.ForRole(role).Render(paddedLabel),
 				strings.Repeat(" ", gapWidth),
 				theme.ForRole(role).Render(glyphs),
 			)
