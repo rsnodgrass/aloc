@@ -6,11 +6,19 @@ Semantic LOC counter that classifies code by role (core, test, docs, infra) with
 
 ## Installation
 
+### Homebrew (macOS/Linux)
+
+```bash
+brew install modern-tooling/tap/aloc
+```
+
+### Go
+
 ```bash
 go install github.com/modern-tooling/aloc/cmd/aloc@latest
 ```
 
-Or build from source:
+### Build from source
 
 ```bash
 git clone https://github.com/modern-tooling/aloc.git
